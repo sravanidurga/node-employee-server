@@ -16,6 +16,8 @@ const PORT = 3300;
 
 const EmployeeController = require('./Controllers/EmployeeController');
 
+const EncryptionController = require('./Controllers/EncrytionController');
+
 /**
  * App Middlewares
  */
@@ -49,7 +51,7 @@ app.get('/robots.txt', (req, res) => {
 });
 
 new EmployeeController('/api/employee', app);
-
+new EncryptionController('/api/encrypt', app);
 //#region end
 
 /**
