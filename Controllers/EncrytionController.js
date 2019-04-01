@@ -17,11 +17,8 @@ class EncryptionController extends Router {
             // Property Routes
             new RouteStub('GET', '/get-hash', 'getHash'),
             new RouteStub('GET', '/generate-keys', 'generateKeys'),
-            new RouteStub('GET', '/encrypt-with-public-key', 'encryptWithPublicKey'),
-            new RouteStub('GET', '/decrypt-with-private-key', 'decryptWithPrivateKey')
-        //     new RouteStub('POST','/add-employee','addEmployee'),
-        //     new RouteStub('POST','/update-employee','updateEmployee'),
-        //     new RouteStub('POST','/delete-employee','deleteEmployee'),
+            new RouteStub('POST', '/encrypt-with-public-key', 'encryptWithPublicKey'),
+            new RouteStub('POST', '/decrypt-with-private-key', 'decryptWithPrivateKey')
          ];
     }
 
@@ -38,30 +35,17 @@ class EncryptionController extends Router {
     }
 
     async encryptWithPublicKey(req,res){
-        const data = await asyncWrapper("Failed to Encrypt", this.Service.encryptStringWithRsaPublicKey,req.query.toEncrypt,'public.pem');
+        const data = await asyncWrapper("Failed to Encrypt", this.Service.encryptWithPublicKey,req.body.text,req.body.receiverPublicKey,req.body.senderPrivateKey);
         console.log(data);
         res.status(data.statusCode).send(data);
     }
 
     async decryptWithPrivateKey(req,res){
-        const data = await asyncWrapper("Failed to Decrypt", this.Service.decryptStringWithRsaPrivateKey,req.query.toDecrypt,'private.pem');
+        const data = await asyncWrapper("Failed to Decrypt", this.Service.decryptWithPrivateKey,req.body.encrypted,req.body.receiverPrivateKey,req.body.senderPublicKey);
         console.log(data);
         res.status(data.statusCode).send(data);
     }
-    // async addEmployee(req, res) {
-    //     const data = await asyncWrapper("Failed to Add Employee", this.Service.addEmployee,req.body);
-    //     res.status(data.statusCode).send(data);
-    // }
-    // async updateEmployee(req, res) {
-    //     const data = await asyncWrapper("Failed to Update Employee", this.Service.updateEmployee,req.body);
-    //     res.status(data.statusCode).send(data);
-    // }
-    // async deleteEmployee(req, res) {
-    //     const data = await asyncWrapper("Failed to Delete Employee", this.Service.deleteEmployee,req.body);
-    //     res.status(data.statusCode).send(data);
-    // }
 
- 
 }
 
 module.exports = EncryptionController;
